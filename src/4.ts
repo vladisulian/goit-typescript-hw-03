@@ -3,13 +3,6 @@ interface IKey {
 
   getSignature(): number;
 }
-
-interface IPerson {
-  readonly key: object;
-
-  getKey(): number;
-}
-
 class Key implements IKey {
   key: number = Math.random();
 
@@ -18,6 +11,11 @@ class Key implements IKey {
   }
 }
 
+interface IPerson {
+  readonly key: object;
+
+  getKey(): number;
+}
 class Person implements IPerson {
   key: object;
 
@@ -31,7 +29,29 @@ class Person implements IPerson {
   }
 }
 
-class House {}
+interface IHouse {
+  door: boolean;
+  key: object;
+
+  tenants: object[];
+
+  comeIn(): void;
+  OpenDoor?(): void;
+}
+abstract class House implements IHouse {
+  door: boolean = false;
+  key: object;
+
+  tenants: object[] = [];
+
+  comeIn(): void {
+    if (this.door) {
+      this.tenants.push(Person);
+    }
+  }
+
+  abstract OpenDoor(): void;
+}
 class MyHouse {}
 
 const key = new Key();
