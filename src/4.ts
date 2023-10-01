@@ -1,31 +1,29 @@
 interface IKey {
-  readonly key: number;
+  readonly signature: number;
 
   getSignature(): number;
 }
 class Key implements IKey {
-  key: number = Math.random();
+  signature: number = Math.random();
 
   getSignature(): number {
-    return this.key;
+    return this.signature;
   }
 }
 
 interface IPerson {
-  readonly key: object;
-
-  getKey(): number;
+  getKey(): object;
 }
 class Person implements IPerson {
-  key: object;
+  private key: object;
 
   constructor(key: object) {
     this.key = key;
   }
 
-  getKey(): number {
+  getKey(): object {
     console.log(this.key);
-    return key.key;
+    return key;
   }
 }
 
@@ -36,7 +34,7 @@ interface IHouse {
   tenants: object[];
 
   comeIn(): void;
-  OpenDoor?(): void;
+  openDoor(key: object): void;
 }
 abstract class House implements IHouse {
   door: boolean = false;
@@ -44,24 +42,53 @@ abstract class House implements IHouse {
 
   tenants: object[] = [];
 
+  constructor(key: object) {
+    this.key = key;
+  }
+
   comeIn(): void {
-    if (this.door) {
+    if (this.door === true) {
       this.tenants.push(Person);
+      console.log("Person has come in the House");
     }
   }
 
-  abstract OpenDoor(): void;
+  abstract openDoor(key: object): void;
 }
-class MyHouse {}
+class MyHouse extends House {
+  door: boolean = false;
+  doorKey: number;
+
+  constructor(key: object) {
+    super(key);
+    this.key = key;
+  }
+
+  openDoor(key: object): void {
+    console.log("Trying to open the door");
+
+    if (key === this.key) {
+      console.log("The door was opened successfully");
+      this.door = true;
+      return;
+    }
+    console.log("The door wasn't opened successfully");
+    return;
+  }
+}
 
 const key = new Key();
 
-// const house = new MyHouse(key);
+const house = new MyHouse(key);
+
 const person = new Person(key);
-person.getKey();
 
-// house.openDoor(person.getKey());
+const personKey = person.getKey();
 
-// house.comeIn(person);
+house.openDoor(personKey);
+house.comeIn();
+
+console.log("Is door opened?", house.door);
+console.log("Tenants:", house.tenants);
 
 export {};
