@@ -34,7 +34,7 @@ class Employee {
 class Manager extends Employee {
   // Реалізуйте конструктор та збільшіть salary на 10000
   constructor(name: string, department: string, salary: number) {
-    super(name, department, 5000);
+    super(name, department, salary);
   }
 
   public incSalary(value: number) {
@@ -46,7 +46,7 @@ class Manager extends Employee {
 const manager = new Manager("John", "FullStack development", 5000);
 
 console.log(`Before -> \n${manager.getEmployeeDetails()}`);
-manager.incSalary(5000);
+manager.incSalary(10000);
 console.log(`After -> \n${manager.getEmployeeDetails()}`);
 
 export {};
